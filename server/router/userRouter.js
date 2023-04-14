@@ -6,7 +6,7 @@ const { checkUserLoginController, registerAllUserController } = require('../cont
 const router = express.Router();
 
 // get the login value
-router.get("/login", checkUserLoginController);
+router.post("/login", checkUserLoginController);
 router.post("/register", registerAllUserController);
 
 
