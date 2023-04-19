@@ -6,8 +6,8 @@ exports.checkUserLoginController = async (req, res) => {
 
     const { email, password } = req.body;
     console.log(req.body);
-    try {
 
+    try {
         if (!email || !password) {
             console.log("hi");
             res.status(403).send({
@@ -54,7 +54,6 @@ exports.registerAllUserController = async (req, res) => {
 
     try {
         const { email, password } = req.body;
-
         const data = new userModel({ email, password });
         await data.save();
 

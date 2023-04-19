@@ -1,4 +1,5 @@
 const taskModel = require('../model/taskSchema');
+const userModel = require('../model/schema');
 
 exports.getTaskDataController = async (req, res) => {
     try {
@@ -28,8 +29,13 @@ exports.getTaskDataController = async (req, res) => {
 }
 
 exports.postTaskDataController = async (req, res) => {
+
+    const user = req.rootUser;
+    console.log(user);
+
     try {
-        const { taskId, taskDescription, taskTimer } = req.body;
+        const { taskId, taskDescription, taskTimer, userId } = req.body;
+
         if (!taskId || !taskDescription || !taskTimer) {
             res.status(404).send({
                 success: false,
@@ -37,7 +43,13 @@ exports.postTaskDataController = async (req, res) => {
             })
         } else {
             const newDocum = new taskModel({ taskId, taskDescription, taskTimer })
+            // console.log(newDocum);
+
+            const existingUser = await userModel.findOne({ _id: user._id.toString() });
+
             await newDocum.save();
+            existingUser.tasks.push(newDocum);
+            await existingUser.save();
 
             res.status(200).send({
                 success: true,
